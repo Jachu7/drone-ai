@@ -34,4 +34,4 @@ except KeyboardInterrupt:
     pass
 
 model.save(run_dir / "model")
-print("zapisano", run_dir / "model.zip")
+print("saved", run_dir / "model.zip")

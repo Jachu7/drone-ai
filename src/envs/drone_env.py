@@ -12,7 +12,7 @@ GOAL = np.array(GOAL_POS)
 
 class DroneEnv(gym.Env):
     def __init__(self, track_seed=None):
-        self.track_seed = track_seed  # None = nowy układ filarów co epizod
+        self.track_seed = track_seed  # None = new pillar layout each episode
         self.action_space = gym.spaces.Box(-1.0, 1.0, (3,), np.float32)
         self.observation_space = gym.spaces.Box(-np.inf, np.inf, (15,), np.float32)
 
@@ -26,12 +26,12 @@ class DroneEnv(gym.Env):
         return self._obs(), {}
 
     def step(self, action):
-        thrust = np.asarray(action) * MAX_THRUST - MASS * dynamics.GRAVITY_VEC  # akcja 0 = zawis
+        thrust = np.asarray(action) * MAX_THRUST - MASS * dynamics.GRAVITY_VEC  # action 0 = hover
         self.pos, self.vel = dynamics.step(self.pos, self.vel, thrust)
         self.t += DT
 
         dist = np.linalg.norm(GOAL - self.pos)
-        reward = self.dist - dist - 0.01  # postęp do mety, kara za czas
+        reward = self.dist - dist - 0.01  # progress to goal, time penalty
         self.dist = dist
 
         result = check(self.pos, self.pillars)
@@ -46,7 +46,7 @@ class DroneEnv(gym.Env):
 
     def _obs(self):
         rel = self.pillars - self.pos[:2]
-        nearest = rel[np.argsort(np.linalg.norm(rel, axis=1))[:3]]  # 3 najbliższe filary
+        nearest = rel[np.argsort(np.linalg.norm(rel, axis=1))[:3]]  # 3 nearest pillars
         return np.concatenate([
             (GOAL - self.pos) / 100,
             self.pos / 100,

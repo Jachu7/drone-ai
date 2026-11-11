@@ -12,7 +12,7 @@ from viz.live import send_layout
 from viz.track_model import log_track
 
 runs = Path(__file__).parent.parent / "runs"
-model_path = sys.argv[1] if len(sys.argv) > 1 else max(runs.glob("*/model.zip"))  # domyślnie najnowszy
+model_path = sys.argv[1] if len(sys.argv) > 1 else max(runs.glob("*/model.zip"))  # latest by default
 model = PPO.load(model_path, device="cpu")
 
 env = DroneEnv(track_seed=TRACK_SEED)

@@ -8,9 +8,9 @@ GRAVITY_VEC = np.array([0.0, 0.0, -GRAVITY])
 
 def step(pos, vel, thrust, wind=0.0, dt=DT):
     norm = np.linalg.norm(thrust, axis=-1, keepdims=True)
-    thrust = thrust * np.minimum(1.0, MAX_THRUST / np.maximum(norm, 1e-9))  # max MAX_THRUST, kierunek bez zmian
+    thrust = thrust * np.minimum(1.0, MAX_THRUST / np.maximum(norm, 1e-9))  # cap at MAX_THRUST, keep direction
 
-    air_vel = vel - wind  # prędkość względem powietrza
+    air_vel = vel - wind  # velocity relative to air
     speed = np.linalg.norm(air_vel, axis=-1, keepdims=True)
     drag = -0.5 * AIR_DENSITY * DRAG_COEFF * FRONTAL_AREA * speed * air_vel
 

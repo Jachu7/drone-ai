@@ -1,25 +1,25 @@
 import numpy as np
 
-# Tor 100 x 50 m, wysokość 20 m. z = góra.
+# Track 100 x 50 m, height 20 m. z = up.
 
 TRACK_MIN = (-2.5, -25.0, 0.0)
 TRACK_MAX = (97.5, 25.0, 20.0)
 
-START_POS = (0.0, 0.0, 1.0)  # dron leży na boxie startowym
+START_POS = (0.0, 0.0, 1.0)  # drone rests on the start box
 START_BOX_SIZE = 1.0         # m
 
-GOAL_POS = (95.0, 0.0, 1.0)  # środek mety
-GOAL_SIZE = 1.0              # m, bok sześcianu
+GOAL_POS = (95.0, 0.0, 1.0)  # goal center
+GOAL_SIZE = 1.0              # m, cube edge
 
 PILLAR_COUNT = 15
 PILLAR_RADIUS = 2.5          # m
-PILLAR_CLEARANCE = 10.0      # m, min. odstęp krawędzi filara od startu i mety w osi x
+PILLAR_CLEARANCE = 10.0      # m, min. x distance from pillar edge to start and goal
 
-TRACK_SEED = 0               # układ filarów do treningu i odtwarzania, None = nowy co epizod
+TRACK_SEED = 0               # pillar layout for training and replay, None = new each episode
 
 
 def random_pillars(seed=None):
-    """Losuje środki filarów (x, y), kształt [PILLAR_COUNT, 2]. Filary w torze i bez nakładania."""
+    """Random pillar centers (x, y), shape [PILLAR_COUNT, 2]. Inside the track, no overlap."""
     rng = np.random.default_rng(seed)
     lo = [START_POS[0] + PILLAR_CLEARANCE + PILLAR_RADIUS, TRACK_MIN[1] + PILLAR_RADIUS]
     hi = [GOAL_POS[0] - PILLAR_CLEARANCE - PILLAR_RADIUS, TRACK_MAX[1] - PILLAR_RADIUS]

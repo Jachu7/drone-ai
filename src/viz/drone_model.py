@@ -6,10 +6,10 @@ MESH_PATH = Path(__file__).parent.parent / "assets" / "fpv_drone_5inch.stl"
 
 
 def log_drone_model():
-    """Loguje kształt drona raz. Przód = oś +x."""
+    """Logs the drone shape once. Front = +x axis."""
     rr.log(
         "drone/mesh",
-        rr.Transform3D(translation=[0.005, 0, -0.01], scale=0.001),  # mm -> m, środek między silnikami w (0, 0, 0)
+        rr.Transform3D(translation=[0.005, 0, -0.01], scale=0.001),  # mm -> m, center between motors at (0, 0, 0)
         rr.Asset3D(path=MESH_PATH, albedo_factor=[100, 30, 30]),
         static=True,
     )
@@ -17,7 +17,7 @@ def log_drone_model():
 
 
 def log_drone_pose(pos, quat_xyzw):
-    """Przesuwa i obraca model. Wołaj co krok symulacji."""
+    """Moves and rotates the model. Call every simulation step."""
     rr.log("drone", rr.Transform3D(translation=pos, rotation=rr.Quaternion(xyzw=quat_xyzw)))
 
 

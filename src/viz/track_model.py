@@ -5,14 +5,14 @@ from envs.track import GOAL_POS, GOAL_SIZE, PILLAR_RADIUS, START_BOX_SIZE, START
 
 
 def log_track(pillars):
-    """Loguje tor raz: granice, start, metę i filary (środki x, y z random_pillars)."""
+    """Logs the track once: bounds, start, goal and pillars (x, y centers from random_pillars)."""
     rr.log("/", rr.ViewCoordinates.RIGHT_HAND_Z_UP, static=True)
 
     lo, hi = np.array(TRACK_MIN), np.array(TRACK_MAX)
     rr.log("track/bounds", rr.Boxes3D(mins=[lo], sizes=[hi - lo], colors=[255, 255, 255], radii=0.05), static=True)
 
     s = START_BOX_SIZE
-    start_center = [START_POS[0], START_POS[1], START_POS[2] - s / 2]  # górna ściana boxa na wysokości startu
+    start_center = [START_POS[0], START_POS[1], START_POS[2] - s / 2]  # box top face at start height
     rr.log(
         "track/start",
         rr.Boxes3D(centers=[start_center], sizes=[[s, s, s]], colors=[0, 200, 0], fill_mode=rr.components.FillMode.Solid),
@@ -27,7 +27,7 @@ def log_track(pillars):
     )
 
     height = hi[2] - lo[2]
-    centers = np.hstack([pillars, np.full((len(pillars), 1), lo[2] + height / 2)])  # filary od ziemi do sufitu
+    centers = np.hstack([pillars, np.full((len(pillars), 1), lo[2] + height / 2)])  # pillars from ground to ceiling
     rr.log(
         "track/pillars",
         rr.Cylinders3D(
